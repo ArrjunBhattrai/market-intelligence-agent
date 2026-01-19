@@ -45,3 +45,17 @@ Consumes raw research data and identifies pricing models, customer segments, and
 
 ### Writer Agent
 Generates structured, human-readable reports from analyzed data without introducing new facts.
+
+## Tech Stack
+
+- Language: Python
+- Agent Orchestration: LangGraph
+- LLM: Local models via Ollama (Qwen / DeepSeek)
+- Web Search: DuckDuckGo / Tavily (free tier)
+- Backend API: FastAPI
+- Persistence: SQLite
+- Vector Store: ChromaDB (local)
+- UI (initial): Streamlit
+
+All components are selected to be free, open-source, and easily replaceable.
+
