@@ -59,3 +59,12 @@ Generates structured, human-readable reports from analyzed data without introduc
 
 All components are selected to be free, open-source, and easily replaceable.
 
+## Development Setup
+
+```bash
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+uvicorn src.api.main:app --reload
+
+
