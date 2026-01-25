@@ -65,6 +65,8 @@ All components are selected to be free, open-source, and easily replaceable.
 python -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
-uvicorn src.api.main:app --reload
+uvicorn src.api.main:app --reload --app-dir src
+> Note: This project uses a `src/` layout.  
+> The `--app-dir src` flag ensures correct module resolution.
 
 
