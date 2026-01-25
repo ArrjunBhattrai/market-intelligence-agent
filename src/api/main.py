@@ -1,8 +1,11 @@
 from fastapi import FastAPI
-from core.config import settings
+from schemas.task import ResearchTask
+from agents.research_agent import ResearchAgent
 
-app = FastAPI(title=settings.APP_NAME)
+app = FastAPI()
 
-@app.get("/health")
-def health_check():
-    return {"status": "ok"}
+@app.post("/research")
+def research(task: ResearchTask):
+    agent = ResearchAgent(name="research-agent")
+    result = agent.run(task.dict())
+    return result
