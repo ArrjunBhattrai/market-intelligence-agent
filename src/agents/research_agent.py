@@ -1,6 +1,7 @@
 from agents.base import BaseAgent
 from llm.mock_llm import MockLLM
 from tools.web_search import search_web
+from tools.scraper import scrape_page
 
 class ResearchAgent(BaseAgent):
     def __init__(self, name: str):
@@ -8,29 +9,24 @@ class ResearchAgent(BaseAgent):
         self.llm = MockLLM()
 
     def run(self, task: dict) -> dict:
-        domain = task.get("domain")
+        domain = task["domain"]
         depth = task.get("depth", 1)
 
-        prompt = f"""
-        Research the following domain:
-        {domain}
+        queries = self.llm.plan(domain)
 
-        Identify competitors, market trends, and pricing models.
-        """
+        raw_texts = []
 
-        decision = self.llm.generate(prompt)
+        for query in queries:
+            results = search_web(query, max_results=depth)
+            for result in results:
+                page_text = scrape_page(result["url"])
+                raw_texts.append(page_text)
 
-        if decision == "search_competitors":
-            results = search_web(f"{domain} competitors")
-        elif decision == "search_pricing":
-            results = search_web(f"{domain} pricing")
-        else:
-            results = search_web(f"{domain} market trends")
+        insights = self.llm.synthesize(raw_texts, domain)
 
         return {
             "agent": self.name,
             "domain": domain,
-            "decision": decision,
-            "results": results,
+            "insights": insights,
             "status": "completed"
         }
